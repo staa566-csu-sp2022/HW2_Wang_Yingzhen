@@ -1,0 +1,46 @@
+---
+title: "HW2_Yingzhen_Wang"
+author: "Yingzhen Wang"
+date: "2/11/2022"
+output: html_document
+knit: (function(input_file, encoding) {
+  out_dir <- 'docs';
+  rmarkdown::render(input_file,
+ encoding=encoding,
+ output_file=file.path(dirname(input_file), out_dir, 'index.html'))})
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(fig.width=12, fig.height=8, fig.path='Figs/',
+                      echo= TRUE, warning=FALSE, message=FALSE)
+```
+
+
+## R Code
+
+```{r plot}
+library(dplyr)
+library(readxl)
+covid <- read.csv("C:/Users/Yingzhen Wang/Desktop//HW2_Wang_Yingzhen/covid19.csv") # The data is a part of the data set which is derived from github called "our world in data"
+covid$date <- as.Date(covid$date)
+xts_covid <- xts::xts(x = covid %>% select(France_new_cases, Germany_new_cases),  # data (y axis)
+                     order.by = covid %>% pull(date))                # date (x axis)
+
+
+class(xts_covid)
+
+head(xts_covid, n = 15)
+
+
+library(dygraphs)
+dygraph(xts_covid)
+
+# Since France and Germany are adjacent to each other, we can observe the difference in the number of new Covid-19 diagnoses in the adjacent two countries and judge whether there is a same trend.
+
+```
+
+## Display Figure in HTLM
+
+```{r diplay}
+dygraph(xts_covid)
+```
